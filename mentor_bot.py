@@ -484,9 +484,20 @@ def setup_scheduler(app: Application) -> AsyncIOScheduler:
 
 
 # ─── MAIN ─────────────────────────────────────────────────────
+async def post_init(app: Application):
+    scheduler = setup_scheduler(app)
+    scheduler.start()
+    log.info("Scheduler activo — 7 mensajes automáticos diarios.")
+
+
 def main():
     log.info("Iniciando MENTOR Bot...")
-    app = Application.builder().token(TELEGRAM_TOKEN).build()
+    app = (
+        Application.builder()
+        .token(TELEGRAM_TOKEN)
+        .post_init(post_init)
+        .build()
+    )
 
     app.add_handler(CommandHandler("start",     cmd_start))
     app.add_handler(CommandHandler("meta",      cmd_meta))
@@ -500,9 +511,7 @@ def main():
     app.add_handler(CommandHandler("reset",     cmd_reset))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, on_message))
 
-    scheduler = setup_scheduler(app)
-    scheduler.start()
-    log.info("MENTOR online — 7 mensajes automáticos activos.")
+    log.info("MENTOR online.")
     app.run_polling(drop_pending_updates=True)
 
 
