@@ -1,4 +1,4 @@
-anthropic>=0.25.0
+groq>=0.5.0
 python-telegram-bot>=21.0
 apscheduler>=3.10.0
 pytz>=2024.1
