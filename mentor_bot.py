@@ -132,7 +132,8 @@ def build_system(modo: str = "conversacion") -> str:
     if memory["finanzas"]["deudas"]:
         deudas_activas = [d for d in memory["finanzas"]["deudas"] if not d.get("pagado")]
         if deudas_activas:
-            ctx += f"\nDEUDAS: {', '.join(f'{d[\"nombre\"]} ${d[\"monto\"]}' for d in deudas_activas)}"
+            deudas_str = ', '.join(d['nombre'] + ' $' + str(d['monto']) for d in deudas_activas)
+    ctx += f'\nDEUDAS: {deudas_str}'
 
     largo = "Máximo 2 oraciones. Corto y con punch." if modo == "proactivo" else "Hasta 4 oraciones. Más si el usuario pide plan o análisis."
 
